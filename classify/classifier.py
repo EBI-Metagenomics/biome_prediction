@@ -119,7 +119,3 @@ def decompress(fname, dest):
     with gzip.open(fname, 'rb') as f_in:
         with open(dest, 'wb') as f_out:
             shutil.copyfileobj(f_in, f_out)
-
-
-if __name__ == '__main__':
-    main()

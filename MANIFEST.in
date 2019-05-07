@@ -1,1 +1,2 @@
-recursive-include data *
+graft classify
+global-exclude *.py __pycache__

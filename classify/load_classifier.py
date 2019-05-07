@@ -4,9 +4,9 @@ import argparse
 import os
 from subprocess import check_output, CalledProcessError
 
-from biome_classifier.classify import BiomeClassifier
+from classify.classifier import BiomeClassifier
 
-PAR_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+PAR_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 DATA_DIR = os.path.join(PAR_DIR, 'data')
 
 FETCH_MODEL_SCRIPT = os.path.join(DATA_DIR, 'fetch_ftp_models.sh')
@@ -21,6 +21,7 @@ INPUT_TRANSFORMER_PICKLE = os.path.join(DATA_DIR, 'input_trans.p.gz')
 
 def save(self):
     logging.info('Saving new model....')
+    self.__module__ = 'classify'
     dump(self, MODEL_PICKLE, compress=9)
 
 
@@ -34,13 +35,14 @@ def load_or_fetch_ftp_model():
     bc = None
     try:
         bc = load_model()
-    except FileNotFoundError:
+    except (FileNotFoundError, AttributeError, ValueError) as e:
+        print(e)
         try:
             bc = fetch_ftp_models()
             if not isinstance(bc, BiomeClassifier):
                 print(bc)
                 raise EnvironmentError('Invalid pickle file')
-        except (EnvironmentError, CalledProcessError) as e:
+        except (EnvironmentError, CalledProcessError, AttributeError) as e:
             logging.error(e)
             bc = None
     return bc
@@ -73,7 +75,6 @@ def main():
     args = parse_args()
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG if args.verbose else logging.INFO)
     bc = get_model(args.regenerate_model, args.verbose)
-
     bc.interactive()
 
 
