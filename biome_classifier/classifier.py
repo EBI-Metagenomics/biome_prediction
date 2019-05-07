@@ -45,7 +45,7 @@ class BiomeClassifier:
 
     def interactive(self):
         while True:
-            inp = input('Please enter text to classify: ')
+            inp = input('Please enter text to biome_classifier: ')
             pred_probs = self.pred_input(inp)
             print('Prediction: {}'.format(pred_probs[0]))
             for cls, pred2 in pred_probs:

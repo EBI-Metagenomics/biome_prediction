@@ -20,7 +20,7 @@ setup(name='biome_classifier',
       include_package_data=True,
       entry_points={
           'console_scripts': [
-              'predict-biome=classify.load_classifier:main',
+              'predict-biome=biome_classifier.load_classifier:main',
           ]
       },
       setup_requires=['pytest-runner'],

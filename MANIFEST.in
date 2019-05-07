@@ -1,2 +1,2 @@
-graft classify
+graft biome_classifier
 global-exclude *.py __pycache__
