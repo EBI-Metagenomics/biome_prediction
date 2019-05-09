@@ -19,10 +19,10 @@ MODEL_PICKLE = os.path.join(DATA_DIR, 'model.p.gz')
 INPUT_TRANSFORMER_PICKLE = os.path.join(DATA_DIR, 'input_trans.p.gz')
 
 
-def save(self):
+def save(classifier):
     logging.info('Saving new model....')
-    self.__module__ = 'biome_classifier'
-    dump(self, MODEL_PICKLE, compress=9)
+    classifier.__module__ = BiomeClassifier.__module__
+    dump(classifier, MODEL_PICKLE, compress=9)
 
 
 def load_model():
@@ -62,12 +62,14 @@ def parse_args():
 
 
 def get_model(regenerate=False, verbose=False):
+    bc = None
     if not regenerate:
         bc = load_or_fetch_ftp_model()
 
     # Fallback if loading failed
     if not bc or regenerate:
         bc = BiomeClassifier(TRAINING_DATA, verbose)
+        save(bc)
     return bc
 
 
