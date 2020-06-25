@@ -1,3 +1,4 @@
 sklearn
 pandas~=0.24.1
 joblib~=0.13.2
+hug==2.6.1
